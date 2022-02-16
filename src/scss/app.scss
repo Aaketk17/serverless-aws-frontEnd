@@ -1,0 +1,27 @@
+.fileUpload-container {
+  display: flex;
+  flex: 10;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  font-family: 'Poppins';
+  color: rgb(33, 37, 41);
+  font-weight: 600;
+}
+.btn-groupName {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+.dataTable-container {
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 10px;
+}
+
+.alertContainer {
+  margin-top: 15px;
+}
