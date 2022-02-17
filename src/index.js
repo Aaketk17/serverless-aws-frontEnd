@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/react'
 import {BrowserTracing} from '@sentry/tracing'
 import LandingPage from './App'
 import './scss/main.css'
+import 'antd/dist/antd.css'
 import {Integrations} from '@sentry/react'
 
 Sentry.init({

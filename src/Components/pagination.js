@@ -18,7 +18,6 @@ const Pagination = ({
   }
 
   useEffect(() => {
-    console.log(dataPerPage, totalDataCount, next, previous)
     addPageNumbers()
   }, [])
 

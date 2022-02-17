@@ -1,0 +1,31 @@
+.modal-btn-cancel {
+  margin-left: 20px;
+  background-color: #dc3545 !important;
+  border: none !important;
+  font-family: 'Poppins';
+}
+
+.modal-btn {
+  font-family: 'Poppins';
+}
+
+.ant-form-item-control-input-content {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ant-form-item-required,
+.ant-form-item-control-input-content {
+  font-family: 'Poppins';
+  font-weight: 500;
+}
+
+.ant-modal-title {
+  font-family: 'Poppins';
+  font-weight: 600 !important;
+}
+/*# sourceMappingURL=modal.css.map */

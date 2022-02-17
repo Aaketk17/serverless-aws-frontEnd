@@ -7,7 +7,7 @@ import AlertPanel from './Components/alert'
 import './scss/app.css'
 
 const LandingPage = () => {
-  const ENDPOINT = process.env.REACT_APP_FILE_UPLOAD_API
+  const ENDPOINT = process.env.REACT_APP_SERVERLESS_URL
   const ErrorTypes = {
     fileTypeError: 1,
     emptyUpload: 2,

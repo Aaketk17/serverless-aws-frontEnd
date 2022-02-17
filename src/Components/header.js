@@ -16,7 +16,7 @@ const Header = () => {
                 <div>
                   <img src={aws} alt="aws-logo" width="60" height="50" />
                 </div>
-                <div className="header-title">Serverless Practice</div>
+                <div className="header-title">AWS Serverless file Upload</div>
               </div>
             </a>
           </div>

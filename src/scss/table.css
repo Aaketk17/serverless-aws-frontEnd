@@ -19,4 +19,32 @@ table {
   margin-top: 50px;
   font-family: 'Poppins';
 }
+
+.modal-header span {
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-size: 18px;
+  color: #dc3545;
+}
+
+.alert-modal-body {
+  font-family: 'Poppins';
+  font-weight: 500;
+}
+
+.alert-modal-body .alert-body-btn {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  font-family: 'Poppins';
+}
+
+.alert-modal-body .alert-body-btn .alert-btn {
+  margin-left: 10px;
+  font-family: 'Poppins';
+}
 /*# sourceMappingURL=table.css.map */

@@ -13,3 +13,27 @@ table {
   margin-top: 50px;
   font-family: 'Poppins';
 }
+
+.modal-header {
+  span {
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 18px;
+    color: #dc3545;
+  }
+}
+
+.alert-modal-body {
+  font-family: 'Poppins';
+  font-weight: 500;
+  .alert-body-btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    font-family: 'Poppins';
+    .alert-btn {
+      margin-left: 10px;
+      font-family: 'Poppins';
+    }
+  }
+}
