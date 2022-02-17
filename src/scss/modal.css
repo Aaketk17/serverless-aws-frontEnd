@@ -28,4 +28,9 @@
   font-family: 'Poppins';
   font-weight: 600 !important;
 }
+
+.loading-heading {
+  font-family: 'Poppins';
+  margin-top: 30px;
+}
 /*# sourceMappingURL=modal.css.map */

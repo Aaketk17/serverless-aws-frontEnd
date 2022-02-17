@@ -6,10 +6,13 @@
       -ms-flex: 10;
           flex: 10;
   width: 100%;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -17,6 +20,24 @@
   font-family: 'Poppins';
   color: #212529;
   font-weight: 600;
+}
+
+.fileUpload-container .card {
+  padding: 30px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 45px;
 }
 
 .btn-groupName {
@@ -40,6 +61,15 @@
 }
 
 .alertContainer {
-  margin-top: 15px;
+  margin-top: 0px;
+}
+
+.download-btn {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.main-container {
+  padding-bottom: 5px;
 }
 /*# sourceMappingURL=app.css.map */

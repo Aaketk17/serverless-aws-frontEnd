@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 import React, {useEffect, useState} from 'react'
-import '../scss/table.css'
 import axios from 'axios'
 import {Popconfirm, message} from 'antd'
 import Pagination from './pagination'
 import EditModal from './modal'
+import '../scss/table.css'
 
 const DataTable = () => {
   const URL = process.env.REACT_APP_SERVERLESS_URL
@@ -33,12 +33,17 @@ const DataTable = () => {
         pageSize: pageSize,
       })
       .then((results) => {
-        setKeys(Object.keys(results.data.PaginatedData.Items[0]))
-        setTableData(results.data.PaginatedData.Items)
-        SetNext(results.data.PaginatedData.Next)
-        setPrevious(results.data.PaginatedData.Previous)
-        setTotalData(results.data.TotalDataCount)
-        setLoading(false)
+        if (results.data.TotalDataCount > 0) {
+          setKeys(Object.keys(results.data.PaginatedData.Items[0]))
+          setTableData(results.data.PaginatedData.Items)
+          SetNext(results.data.PaginatedData.Next)
+          setPrevious(results.data.PaginatedData.Previous)
+          setTotalData(results.data.TotalDataCount)
+          setLoading(false)
+        } else {
+          setTotalData(results.data.TotalDataCount)
+          setLoading(false)
+        }
       })
       .catch((error) => {
         console.log(error)
@@ -97,8 +102,27 @@ const DataTable = () => {
             <span className="sr-only"></span>
           </div>
         </div>
+      ) : totalData === 0 ? (
+        <div>
+          <div className="d-flex justify-content-center">
+            <div className="spinner-grow text-primary" role="status"></div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <span className="sr-only loading-heading">
+              No Data. Upload a File to show it in Table
+            </span>
+          </div>
+        </div>
       ) : (
         <div>
+          <Pagination
+            next={next}
+            previous={previous}
+            totalDataCount={totalData}
+            dataPerPage={pageSize}
+            paginate={paginate}
+            page={page}
+          />
           <table className="table table-striped">
             <thead>
               <tr>
@@ -132,7 +156,7 @@ const DataTable = () => {
                         Edit
                       </button>
                       <Popconfirm
-                        title="Are you sure to delete this task?"
+                        title={`Are you sure to delete this Record ${value.StockCode} ?`}
                         onConfirm={() => deleteRecord(value.StockCode)}
                         // onCancel={cancel}
                         okText="Yes"
@@ -164,6 +188,7 @@ const DataTable = () => {
           values={values}
           setVisible={setModal}
           getTableData={getTableData}
+          spinner={setLoading}
         />
       ) : null}
     </div>

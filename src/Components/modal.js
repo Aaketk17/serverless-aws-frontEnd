@@ -3,7 +3,7 @@ import {Modal, Form, Input, Button, message} from 'antd'
 import axios from 'axios'
 import '../scss/modal.css'
 
-const EditModal = ({visible, values, setVisible, getTableData}) => {
+const EditModal = ({visible, values, setVisible, getTableData, spinner}) => {
   const [form] = Form.useForm()
   const formRef = useRef()
   const URL = process.env.REACT_APP_SERVERLESS_URL
@@ -11,6 +11,7 @@ const EditModal = ({visible, values, setVisible, getTableData}) => {
 
   const updateValues = async (newValues) => {
     setLoading(true)
+    spinner(true)
     await axios
       .put(`${URL}/updateData/${values.stockCode}`, newValues)
       .then((results) => {
@@ -21,6 +22,7 @@ const EditModal = ({visible, values, setVisible, getTableData}) => {
             duration: 5,
           })
           getTableData()
+          spinner(false)
           setLoading(false)
           setVisible(false)
         }
@@ -41,8 +43,8 @@ const EditModal = ({visible, values, setVisible, getTableData}) => {
   }
 
   return loading ? (
-    <div class="spinner-border text-warning" role="status">
-      <span class="sr-only"></span>
+    <div className="d-flex justify-content-center">
+      <span className="sr-only loading-heading">Values are Updating....</span>
     </div>
   ) : (
     <Modal

@@ -4,10 +4,14 @@ import Header from './Components/header'
 import DataTable from './Components/table'
 import axios from 'axios'
 import AlertPanel from './Components/alert'
+import {message} from 'antd'
 import './scss/app.css'
 
 const LandingPage = () => {
-  const ENDPOINT = process.env.REACT_APP_SERVERLESS_URL
+  const URL = process.env.REACT_APP_SERVERLESS_URL
+  const [loading, setLoading] = useState(false)
+  const [spinner, setSpinner] = useState(false)
+
   const ErrorTypes = {
     fileTypeError: 1,
     emptyUpload: 2,
@@ -19,6 +23,7 @@ const LandingPage = () => {
   const inputRef = useRef()
 
   const chooseFileToUpload = async (val) => {
+    val.preventDefault()
     const fName = val.target.files[0].name
     const extension = fName.split('.').pop()
 
@@ -33,59 +38,187 @@ const LandingPage = () => {
     }
   }
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
     console.log(file)
     if (file === undefined) {
       setError(ErrorTypes.emptyUpload)
+      inputRef.current.value = null
+      inputRef.current.files = undefined
     } else {
-      console.log(ENDPOINT)
+      setSpinner(true)
+      await axios
+        .post(`${URL}/fileUpload`, {
+          fileName: file.name,
+        })
+        .then((results) => {
+          if (results.status === 200) {
+            const values = {
+              url: results.data.URL.url,
+              fields: results.data.URL.fields,
+            }
+            uploadToS3(values)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          message.open({
+            type: 'error',
+            content: `Error in creating Signed URL, ${error}`,
+            duration: 10,
+          })
+        })
+      inputRef.current.value = null
+      inputRef.current.files = undefined
+      console.log(URL)
     }
+  }
+
+  const uploadToS3 = async (values) => {
+    var formData = new FormData()
+    for (const key in values.fields) {
+      formData.append(key, values.fields[key])
+    }
+    formData.append('file', file)
+    await axios({
+      method: 'post',
+      url: `${values.url}`,
+      data: formData,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+      .then((results) => {
+        console.log(results)
+        if (results.status === 204) {
+          message.open({
+            type: 'success',
+            content: 'File uploaded to S3 Successfully',
+            duration: 3,
+          })
+          setSpinner(false)
+          window.location.reload(true)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        message.open({
+          type: 'error',
+          content: `Error in Uploading File, ${error}`,
+          duration: 10,
+        })
+        setSpinner(false)
+      })
+  }
+
+  const generateSignedUrl = async () => {
+    setLoading(true)
+    await axios
+      .get(`${URL}/writeToFile`)
+      .then((results) => {
+        console.log(results)
+        if (results.status === 200) {
+          message.open({
+            type: 'success',
+            content: 'Signed URL successfully created',
+            duration: 10,
+          })
+          downloadFile(results.data.URL)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        message.open({
+          type: 'error',
+          content: `Error in creating Signed URL, ${error}`,
+          duration: 10,
+        })
+      })
+  }
+
+  const downloadFile = async (url) => {
+    console.log(url)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `data.xlsx`)
+    document.body.appendChild(link)
+    link.click()
+    setLoading(false)
   }
 
   return (
     <div className="main-container">
       <Header />
-      <div className="fileUpload-container">
-        <span>Upload CSV or Excel File to Migrate the Data to DynamoDB</span>
-        <div className="btn-groupName">
-          <div className="mb-3">
-            <input
-              className="form-control form-control-sm"
-              type="file"
-              ref={inputRef}
-              id="formFile"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              onChange={(val) => chooseFileToUpload(val)}
-            />
+      <div className="fileUpload-container row">
+        <div className="col-sm-4">
+          <div className="card">
+            <span>
+              Upload CSV or Excel File to Migrate the Data to DynamoDB
+            </span>
+            <div className="btn-groupName">
+              <div className="mb-3">
+                <input
+                  className="form-control form-control-sm"
+                  type="file"
+                  ref={inputRef}
+                  id="formFile"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  onChange={(val) => chooseFileToUpload(val)}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-dark btn-sm"
+                onClick={uploadFile}
+              >
+                Upload
+              </button>
+            </div>
+            {spinner ? (
+              <div className="d-flex justify-content-center">
+                <div class="spinner-border text-dark " role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </div>
+            ) : null}
           </div>
-          <button
-            type="button"
-            className="btn btn-dark btn-sm"
-            onClick={uploadFile}
-          >
-            Upload
-          </button>
         </div>
-        <div className="alertContainer">
-          {error === 1 ? (
-            <AlertPanel
-              type="danger"
-              content="Check your File Type only csv, xls, xlsx are accepted"
-              setErrorCode={setError}
-            />
-          ) : error === 2 ? (
-            <AlertPanel
-              type="warning"
-              content="Choose a File to Upload"
-              setErrorCode={setError}
-            />
-          ) : error === 3 ? (
-            <AlertPanel
-              type="danger"
-              content="Error in Uploading File"
-              setErrorCode={setError}
-            />
-          ) : null}
+        <div className="col-sm-4">
+          <div className="card">
+            <span>Download whole Data from DB as Excel File</span>
+            <button
+              type="button"
+              className="btn btn-sm btn-success download-btn"
+              onClick={() => generateSignedUrl()}
+            >
+              Download
+            </button>
+            {loading ? (
+              <div className="spinner-border text-success" role="status">
+                <span className="sr-only"></span>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="d-flex justify-content-center">
+          <div className="alertContainer">
+            {error === 1 ? (
+              <AlertPanel
+                type="danger"
+                content="Check your File Type only csv, xls, xlsx are accepted"
+                setErrorCode={setError}
+              />
+            ) : error === 2 ? (
+              <AlertPanel
+                type="warning"
+                content="Choose a File to Upload"
+                setErrorCode={setError}
+              />
+            ) : error === 3 ? (
+              <AlertPanel
+                type="danger"
+                content="Error in Uploading File"
+                setErrorCode={setError}
+              />
+            ) : null}
+          </div>
         </div>
       </div>
       <div className="dataTable-container">
