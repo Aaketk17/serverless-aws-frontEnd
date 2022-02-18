@@ -94,7 +94,6 @@ const LandingPage = () => {
             duration: 3,
           })
           setSpinner(false)
-          window.location.reload(true)
         }
       })
       .catch((error) => {
@@ -173,8 +172,8 @@ const LandingPage = () => {
             </div>
             {spinner ? (
               <div className="d-flex justify-content-center">
-                <div class="spinner-border text-dark " role="status">
-                  <span class="sr-only"></span>
+                <div className="spinner-border text-dark " role="status">
+                  <span className="sr-only"></span>
                 </div>
               </div>
             ) : null}
