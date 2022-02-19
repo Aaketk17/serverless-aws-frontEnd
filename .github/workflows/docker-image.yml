@@ -21,5 +21,7 @@ jobs:
         run: |
           docker build --build-arg env_var=$ENV_VAR -t aws-serverless:latest .
       - name: Push to DockerHub
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker push aws-serverless:latest
+          docker push DOCKER_USER/practise-docker-repository
