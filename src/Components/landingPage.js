@@ -40,6 +40,7 @@ const LandingPage = () => {
   }
 
   const uploadFileSignedUrl = async () => {
+    console.log(URL, 'URL')
     if (file === undefined) {
       setError(ErrorTypes.emptyUpload)
       inputRef.current.value = null
@@ -66,6 +67,7 @@ const LandingPage = () => {
             content: `Error in creating Signed URL, ${error}`,
             duration: 10,
           })
+          setSpinner(false)
         })
       inputRef.current.value = null
       inputRef.current.files = undefined
