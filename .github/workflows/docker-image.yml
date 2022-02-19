@@ -18,8 +18,9 @@ jobs:
       - name: Docker Build Image
         env:
           ENV_VAR: ${{ secrets.REACT_APP_SERVERLESS_URL }}
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker build --build-arg env_var=$ENV_VAR -t aws-serverless:latest .
+          docker build --build-arg env_var=$ENV_VAR -t $DOCKER_USER/aws-serverless:latest .
       - name: Push to DockerHub
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
