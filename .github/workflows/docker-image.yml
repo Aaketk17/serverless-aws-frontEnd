@@ -23,4 +23,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: practice-docker-repository:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/practise-docker-repository:latest
