@@ -4,6 +4,8 @@ import axios from 'axios'
 import {Popconfirm, message} from 'antd'
 import Pagination from './pagination'
 import EditModal from './modal'
+import Header from './header'
+import {useNavigate} from 'react-router-dom'
 import '../scss/table.css'
 
 const DataTable = () => {
@@ -17,6 +19,8 @@ const DataTable = () => {
   const [previous, setPrevious] = useState()
   const [keys, setKeys] = useState([])
   const [modal, setModal] = useState(false)
+
+  const navigate = useNavigate()
 
   const editKeys = {
     quantity: '',
@@ -96,101 +100,125 @@ const DataTable = () => {
 
   return (
     <div>
-      {loading ? (
-        <div className="d-flex justify-content-center">
-          <div className="spinner-grow text-primary" role="status">
-            <span className="sr-only"></span>
-          </div>
-        </div>
-      ) : totalData === 0 ? (
-        <div>
+      <Header />
+      <div className="dataTable-container">
+        {loading ? (
           <div className="d-flex justify-content-center">
-            <div className="spinner-grow text-primary" role="status"></div>
+            <div className="spinner-grow text-primary" role="status">
+              <span className="sr-only"></span>
+            </div>
           </div>
-          <div className="d-flex justify-content-center">
-            <span className="sr-only loading-heading">
-              No Data. Upload a File to show it in Table
-            </span>
+        ) : totalData === 0 ? (
+          <div className="loading-table-container">
+            <div className="d-flex justify-content-center">
+              <div className="spinner-grow text-primary" role="status"></div>
+            </div>
+            <div className="d-flex justify-content-center">
+              <span className="sr-only loading-heading">
+                No Data to show in table. Upload a File
+              </span>
+            </div>
+            <div className="table-top-btns-data d-flex justify-content-center">
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => navigate('/home')}
+              >
+                Go Back
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div>
-          <Pagination
-            next={next}
-            previous={previous}
-            totalDataCount={totalData}
-            dataPerPage={pageSize}
-            paginate={paginate}
-            page={page}
-          />
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">No.</th>
-                {keys.map((value, index) => (
-                  <th scope="col" key={index}>
-                    {value}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((value, index) => (
-                <tr key={index}>
-                  <th scope="col">{(page - 1) * pageSize + index + 1}</th>
-                  <td>{value.InvoiceNo}</td>
-                  <td>{value.UnitPrice}</td>
-                  <td>{value.Country}</td>
-                  <td>{value.InvoiceDate}</td>
-                  <td>{value.Description}</td>
-                  <td>{value.Quantity}</td>
-                  <td>{value.StockCode}</td>
-                  <td>{value.CustomerID}</td>
-                  <td>
-                    <div className="action-btns">
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-sm"
-                        onClick={() => editValues(value)}
-                      >
-                        Edit
-                      </button>
-                      <Popconfirm
-                        title={`Are you sure to delete this Record ${value.StockCode} ?`}
-                        onConfirm={() => deleteRecord(value.StockCode)}
-                        // onCancel={cancel}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <button type="button" className="btn btn-danger btn-sm">
-                          Delete
-                        </button>
-                      </Popconfirm>
-                    </div>
-                  </td>
+        ) : (
+          <div>
+            <div className="table-top-btns">
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => navigate('/home')}
+              >
+                Go Back
+              </button>
+            </div>
+            <Pagination
+              next={next}
+              previous={previous}
+              totalDataCount={totalData}
+              dataPerPage={pageSize}
+              paginate={paginate}
+              page={page}
+            />
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">No.</th>
+                  {keys.map((value, index) => (
+                    <th scope="col" key={index}>
+                      {value}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            next={next}
-            previous={previous}
-            totalDataCount={totalData}
-            dataPerPage={pageSize}
-            paginate={paginate}
-            page={page}
+              </thead>
+              <tbody>
+                {tableData.map((value, index) => (
+                  <tr key={index}>
+                    <th scope="col">{(page - 1) * pageSize + index + 1}</th>
+                    <td>{value.InvoiceNo}</td>
+                    <td>{value.UnitPrice}</td>
+                    <td>{value.Country}</td>
+                    <td>{value.InvoiceDate}</td>
+                    <td>{value.Description}</td>
+                    <td>{value.Quantity}</td>
+                    <td>{value.StockCode}</td>
+                    <td>{value.CustomerID}</td>
+                    <td>
+                      <div className="action-btns">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          onClick={() => editValues(value)}
+                        >
+                          Edit
+                        </button>
+                        <Popconfirm
+                          title={`Are you sure to delete this Record ${value.StockCode} ?`}
+                          onConfirm={() => deleteRecord(value.StockCode)}
+                          // onCancel={cancel}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                          >
+                            Delete
+                          </button>
+                        </Popconfirm>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              next={next}
+              previous={previous}
+              totalDataCount={totalData}
+              dataPerPage={pageSize}
+              paginate={paginate}
+              page={page}
+            />
+          </div>
+        )}
+        {modal ? (
+          <EditModal
+            visible={modal}
+            values={values}
+            setVisible={setModal}
+            getTableData={getTableData}
+            spinner={setLoading}
           />
-        </div>
-      )}
-      {modal ? (
-        <EditModal
-          visible={modal}
-          values={values}
-          setVisible={setModal}
-          getTableData={getTableData}
-          spinner={setLoading}
-        />
-      ) : null}
+        ) : null}
+      </div>
     </div>
   )
 }

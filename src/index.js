@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import * as Sentry from '@sentry/react'
 import {BrowserTracing} from '@sentry/tracing'
-import LandingPage from './App'
+import App from './App.js'
 import './scss/main.css'
 import 'antd/dist/antd.css'
 import {Integrations} from '@sentry/react'
@@ -15,7 +15,7 @@ Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
-    <LandingPage />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )

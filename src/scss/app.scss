@@ -1,11 +1,12 @@
 .fileUpload-container {
   display: flex;
+  display: 1;
   flex: 10;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin: 100px 0px 100px 0px;
   font-family: 'Poppins';
   color: rgb(33, 37, 41);
   font-weight: 600;
@@ -43,4 +44,20 @@
 .main-container {
   // background-color: red;
   padding-bottom: 5px;
+}
+
+.table-view-btn {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  button {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins';
+    font-size: 15px;
+    font-weight: 500;
+  }
 }
