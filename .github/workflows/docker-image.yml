@@ -15,12 +15,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/practise-docker-repository:latest
+      - name: Docker Build Image
+        env:
+          ENV_VAR: ${{ secrets.REACT_APP_SERVERLESS_URL }}
+        run: |
+          docker build --build-arg env_var=$ENV_VAR -t aws-serverless:latest
+      - name: Push to DockerHub
+        run: |
+          docker push aws-serverless:latest
+

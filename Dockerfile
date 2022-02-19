@@ -4,6 +4,8 @@ COPY package.json .
 RUN npm install
 COPY . .
 ENV PATH="./node_modules/bin:$PATH"
+ARG env_var
+ENV REACT_APP_SERVERLESS_URL=$env_var
 RUN npm run build
 
 FROM nginx:1.21.6-alpine

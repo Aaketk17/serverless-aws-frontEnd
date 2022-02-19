@@ -17,6 +17,7 @@ const LandingPage = () => {
     emptyUpload: 2,
     uploadError: 3,
   }
+
   const [file, setFile] = useState()
   const [error, setError] = useState()
 
