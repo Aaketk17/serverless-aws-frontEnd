@@ -127,7 +127,7 @@ const LandingPage = () => {
         console.log(error)
         message.open({
           type: 'error',
-          content: `Error in creating Signed URL, Table may be empty, upload file first |   ${error}`,
+          content: `Error in creating Signed URL, Table might be empty, upload file first |   ${error}`,
           duration: 4,
         })
         setLoading(false)
